@@ -9,25 +9,32 @@ class Obstacle:
     def __init__(self, screen, x, height, space):
         self.screen = screen
         self.x = x
+        self.y = 0
         self.height = height
         self.space = space
         self.v = 50
+        self.w = 20
         self.image_up = pygame.image.load('quest_2/image_up.png')
-        self.image_up = pygame.transform.scale(self.image_up,
-                        (self.image_up.get_width() // 5, height))
         self.image_down = pygame.image.load('quest_2/image_down.png')
-        self.image_down = pygame.transform.scale(self.image_down,
-                        (self.image_down.get_width() // 5, 900 - height - space))
         self.width = self.image_up.get_width() // 5
-
     def move(self):
         dt = 0.1
         self.x -= self.v * dt
+        if self.y >= 100 or self.y < 0:
+            self.w = - self.w
+        self.y += self.w * dt
 
     def draw(self):
         a = 10
-        self.screen.blit(self.image_up, (self.x, 0))
-        self.screen.blit(self.image_down, (self.x, self.height + self.space))
+        image_up = pygame.transform.scale(self.image_up,
+                        (self.image_up.get_width() // 5,
+                        self.height + self.y))
+        image_down = pygame.transform.scale(self.image_down,
+                        (self.image_down.get_width() // 5,
+                        900 - self.height - self.space - self.y))
+        self.screen.blit(image_up, (self.x, 0))
+        self.screen.blit(image_down,
+                        (self.x, self.y + self.height + self.space))
 
 class MyPlayer(Player.Player):
     
@@ -68,7 +75,7 @@ while (status):
         start = curr
         height = random.randint(200, 400)
         space = random.randint(200, 300)
-        x = 1500
+        x = 1600
         wall = Obstacle(screen, x, height, space)
         obstacles.append(wall)
     obj_remove = []
@@ -84,9 +91,9 @@ while (status):
             flag1 = 1
         if pos[0] > obj.x and pos[2] < obj.x + obj.width:
             flag2 = 1
-        if pos[3] > obj.height + obj.space:
+        if pos[3] > obj.y + obj.height + obj.space:
             flag3 = 1
-        if pos[1] < obj.height:
+        if pos[1] < obj.height + obj.y:
             flag4 = 1
         if flag4 + flag3 != 0 and flag2 + flag1 != 0:
             status = False
