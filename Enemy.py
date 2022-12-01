@@ -2,8 +2,6 @@ import pygame
 import random
 
 
-WIDTH = 600
-HEIGHT = 600
 
 image = {} #размер каждой картинки 64x64
 image['down'] = pygame.image.load("move/down.png")
@@ -38,7 +36,7 @@ class Enemy:
         
     '''
     
-    def __init__(self, screen, x=450, y=450):
+    def __init__(self, screen, x=100, y=100):
         self.screen = screen
         self.x = x
         self.y = y
@@ -53,23 +51,25 @@ class Enemy:
         self.vy = 0
         self.cond = False
         self.step = 0
-        self.r = 20
+        self.r = 300
+        self.WIDTH = 600
+        self.HEIGHT = 600
         
 
     
     def move_far_from_player(self):
         if self.step <= 0:
             self.step = random.randint(0, 50)
-            self.v = random.randint(-10, 10)
+            self.v = random.randint(-1, 1)
             self.orientation = random.randint(0, 1)
         if self.orientation == 0:
-            if self.x + self.v < WIDTH and self.x + self.v > 0:
+            if self.x + self.v < self.WIDTH and self.x + self.v > 0:
                 self.x += self.v
                 self.step -= 1
             else: 
                 self.step -= 1
         if self.orientation == 1:
-            if self.y + self.v < HEIGHT and self.y + self.v > 0:
+            if self.y + self.v < self.HEIGHT and self.y + self.v > 0:
                 self.y += self.v
                 self.step -= 1
             else:
@@ -77,22 +77,22 @@ class Enemy:
     
     def move_near_player(self, obj):
         if obj.x - self.x < - self.r:
-            self.vx = - 5
+            self.vx = - 1
         elif obj.x - self.x > self.r:
-            self.vx = 5
+            self.vx = 1
         elif abs(obj.x - self.x) < self.r:
             self.vx = 0
         
         if obj.y - self.y < - self.r:
-            self.vy = - 5
+            self.vy = - 1
         elif obj.y - self.y > self.r:
-            self.vy = 5
+            self.vy = 1
         elif abs(obj.y - self.y) < self.r:
             self.vy = 0
             
-        if self.x + self.vx < WIDTH and self.x + self.vx > 0:
+        if self.x + self.vx < self.WIDTH and self.x + self.vx > 0:
                 self.x += self.vx
-        if self.y + self.vy < HEIGHT and self.y + self.vy > 0:
+        if self.y + self.vy < self.HEIGHT and self.y + self.vy > 0:
                 self.y += self.vy
         
 
@@ -134,27 +134,3 @@ class Enemy:
     def get_pos(self):
         return (self.x - 32, self.y - 32, self.x + 32, self.y + 32)
         
-pygame.init()
-
-
-FPS = 30
-
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-pygame.display.update()
-clock = pygame.time.Clock()
-finished = False
-
-
-status = True
-player = Enemy(screen)
-while (status):
-    clock.tick(FPS)
-    screen.fill('WHITE')
-    player.draw()
-    player.move_far_from_player()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            status = False
-    
-    pygame.display.update()
