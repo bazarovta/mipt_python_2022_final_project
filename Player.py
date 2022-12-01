@@ -52,7 +52,7 @@ class Player:
             self.orientation = 'up'
 
     def move(self):
-        dt = 0.1
+        dt = 0.01
         if self.cond == True:
             self.x += self.v * movement[self.orientation][0] * dt
             self.y += self.v * movement[self.orientation][1] * dt
@@ -122,5 +122,4 @@ while (status):
             player.attack = False
     
     pygame.display.update()
- '''
-
+'''
