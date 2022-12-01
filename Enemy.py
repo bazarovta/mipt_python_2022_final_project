@@ -54,8 +54,9 @@ class Enemy:
         self.r = 300
         self.WIDTH = 600
         self.HEIGHT = 600
-        
-
+        self.image = pygame.image.load("monsters/bamboo.png")
+        self.image = pygame.transform.scale(self.image,
+                    (self.image.get_width() // 1.5, self.image.get_height() // 1.5))
     
     def move_far_from_player(self):
         if self.step <= 0:
@@ -116,8 +117,7 @@ class Enemy:
         return (start, end, power)
 
     def draw(self):
-        im = image['down']
-        self.screen.blit(im, (self.x - 32, self.y - 32))
+        self.screen.blit(self.image, (self.x - 32, self.y - 32))
         '''
         if self.attack == True:
             im_w = sword[self.orientation]
