@@ -30,7 +30,7 @@ while (status):
     player.draw()
     player.move()
     enemy.draw()
-    if (player.x - enemy.x) ** 2 + (player.y - enemy.y) ** 2 <= enemy.r ** 2:
+    if (player.x - enemy.x) ** 2 + (player.y - enemy.y) ** 2 <= enemy.R ** 2:
         enemy.move_near_player(player)
     else:
         enemy.move_far_from_player()

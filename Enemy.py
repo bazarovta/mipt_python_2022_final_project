@@ -51,7 +51,8 @@ class Enemy:
         self.vy = 0
         self.cond = False
         self.step = 0
-        self.r = 300
+        self.R = 300
+        self.r = 150
         self.WIDTH = 600
         self.HEIGHT = 600
         self.image = pygame.image.load("monsters/bamboo.png")
@@ -77,19 +78,42 @@ class Enemy:
                 self.step -= 1
     
     def move_near_player(self, obj):
-        if obj.x - self.x < - self.r:
+        '''
+        if obj.x - self.x < - self.R:
             self.vx = - 1
-        elif obj.x - self.x > self.r:
+        elif obj.x - self.x > self.R:
             self.vx = 1
-        elif abs(obj.x - self.x) < self.r:
+        elif abs(obj.x - self.x) < self.R:
             self.vx = 0
         
-        if obj.y - self.y < - self.r:
+        if obj.y - self.y < - self.R:
             self.vy = - 1
-        elif obj.y - self.y > self.r:
+        elif obj.y - self.y > self.R:
             self.vy = 1
-        elif abs(obj.y - self.y) < self.r:
+        elif abs(obj.y - self.y) < self.R:
             self.vy = 0
+        '''
+        if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.R ** 2 and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 > self.r ** 2:
+            if obj.x - self.x < 0:
+                self.vx = - 1
+            elif obj.x - self.x > 0:
+                self.vx = 1
+                
+            if obj.y - self.y < 0:
+                self.vy = - 1
+            elif obj.y - self.y > 0:
+                self.vy = 1
+                
+        if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.r ** 2:
+            if obj.x - self.x < 0:
+                self.vx =  1
+            elif obj.x - self.x > 0:
+                self.vx = -1
+                
+            if obj.y - self.y < 0:
+                self.vy = 1
+            elif obj.y - self.y > 0:
+                self.vy = -1
             
         if self.x + self.vx < self.WIDTH and self.x + self.vx > 0:
                 self.x += self.vx
