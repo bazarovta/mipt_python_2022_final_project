@@ -1,5 +1,8 @@
 import pygame
+from pygame.draw import *
 import random
+import numpy as np
+import math
 
 
 
@@ -17,9 +20,57 @@ movement = {'right': [1, 0], 'left': [-1, 0],
             'down': [0, 1], 'up': [0, -1]}
 
 
+class Shell:
+    def __init__(self, screen: pygame.Surface, x, y):
+        
+        self.screen = screen
+        self.x = x
+        self.y = y
+        self.r = 10
+        self.vx = 0.
+        self.vy = 0.
+        self.color = 'RED'
+        self.WIDTH = 600
+        self.HEIGHT = 600
+        self.live = 60
+        
+    def move(self):
+        if self.x + self.vx + self.r >= self.WIDTH or self.x + self.vx - self.r <= 0:
+            self.vx = -self.vx // np.sqrt(3)
+        if self.y + self.vy + self.r >= self.HEIGHT or self.y + self.vy - self.r <= 0:
+            self.vy = -self.vy // np.sqrt(3)
+        self.x += self.vx
+        self.y += self.vy
+        self.live -= 1
+        
+    def draw(self):
+        
+        """
+        Drawing the Ball
+        """
+        pygame.draw.circle(
+            self.screen,
+            self.color,
+            (self.x, self.y),
+            self.r
+        )
+
+    def hittest(self, obj):
+        """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
+        Args:
+            obj: Обьект, с которым проверяется столкновение.
+        Returns:
+            Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
+        """
+        if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 <= (self.r + obj.r) ** 2:
+            return True
+        else:
+            return False
+
+
 class Enemy:
     '''
-    Class Player
+    Class Enemy
     var:
         screen; x,y - player location; stamina; health; 
         orientation - show where he looking(up right down left);
@@ -55,6 +106,8 @@ class Enemy:
         self.r = 150
         self.WIDTH = 600
         self.HEIGHT = 600
+        self.power = 20
+        self.an = 0
         self.image = pygame.image.load("monsters/bamboo.png")
         self.image = pygame.transform.scale(self.image,
                     (self.image.get_width() // 1.5, self.image.get_height() // 1.5))
@@ -78,21 +131,6 @@ class Enemy:
                 self.step -= 1
     
     def move_near_player(self, obj):
-        '''
-        if obj.x - self.x < - self.R:
-            self.vx = - 1
-        elif obj.x - self.x > self.R:
-            self.vx = 1
-        elif abs(obj.x - self.x) < self.R:
-            self.vx = 0
-        
-        if obj.y - self.y < - self.R:
-            self.vy = - 1
-        elif obj.y - self.y > self.R:
-            self.vy = 1
-        elif abs(obj.y - self.y) < self.R:
-            self.vy = 0
-        '''
         if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.R ** 2 and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 > self.r ** 2:
             if obj.x - self.x < 0:
                 self.vx = - 1
@@ -120,25 +158,27 @@ class Enemy:
         if self.y + self.vy < self.HEIGHT and self.y + self.vy > 0:
                 self.y += self.vy
         
-
-    def vector_of_attack(self):
-        start = (self.x, self.y)
-        end = (0,0)
-        if self.weapon == 'sword':
-            if self.orientation == 'left':
-                end[0] = self.x - 32 - 44
-                end[1] = self.y
-            elif self.orientation == 'right':
-                end[0] = self.x + 32 + 44
-                end[1] = self.y
-            elif self.orientation == 'up':
-                end[0] = self.x
-                end[1] = self.y - 32 - 44
+    def fire(self, event, shells, obj):  
+        '''
+        Firing into the player
+        Return list of shells
+        '''
+        if obj.x - self.x == 0:
+            if obj.y > self.y:
+                self.an = math.asin(1)
             else:
-                end[0] = self.x
-                end[1] = self.y + 32 + 44
-        power = 5 * self.stamina/100
-        return (start, end, power)
+                self.an = math.asin(1) + np.pi
+        elif obj.x - self.x > 0:
+            self.an = math.atan((obj.y - self.y) / (obj.x - self.x))
+        elif obj.x - self.x < 0:
+            self.an = math.atan((obj.y - self.y) / (obj.y - self.x)) + np.pi
+            
+        new_shell = Shell(self.screen, self.x, self.y)
+        new_shell.vx = self.power * math.cos(self.an) // 2
+        new_shell.vy = self.power * math.sin(self.an) // 2
+        shells.append(new_shell)
+        return shells     
+        
 
     def draw(self):
         self.screen.blit(self.image, (self.x - 32, self.y - 32))
@@ -155,6 +195,8 @@ class Enemy:
                 self.screen.blit(im_w, (self.x - 11, self.y - 32 - 44))   
         ''' 
     
+    '''
     def get_pos(self):
         return (self.x - 32, self.y - 32, self.x + 32, self.y + 32)
+    '''
         

@@ -39,6 +39,7 @@ class Player:
         self.weapon = 'sword'
         self.surface = image['down']
         self.v = 50
+        self.r = 20
         self.cond = False
 
     def take_orientation(self, event):
