@@ -41,6 +41,7 @@ class Player:
         self.v = 50
         self.r = 20
         self.cond = False
+        self.live = 1
 
     def take_orientation(self, event):
         if event.key == pygame.K_d:

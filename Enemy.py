@@ -103,7 +103,7 @@ class Enemy:
         self.cond = False
         self.step = 0
         self.R = 300
-        self.r = 150
+        self.r = 200
         self.WIDTH = 600
         self.HEIGHT = 600
         self.power = 20
@@ -133,32 +133,32 @@ class Enemy:
     def move_near_player(self, obj):
         if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.R ** 2 and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 > self.r ** 2:
             if obj.x - self.x < 0:
-                self.vx = - 10
+                self.vx = - 5
             elif obj.x - self.x > 0:
-                self.vx = 10
+                self.vx = 5
                 
             if obj.y - self.y < 0:
-                self.vy = - 10
+                self.vy = - 5
             elif obj.y - self.y > 0:
-                self.vy = 10
+                self.vy = 5
                 
         if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.r ** 2:
             if obj.x - self.x < 0:
-                self.vx =  10
+                self.vx =  5
             elif obj.x - self.x > 0:
-                self.vx = -10
+                self.vx = -5
                 
             if obj.y - self.y < 0:
-                self.vy = 1
+                self.vy = 5
             elif obj.y - self.y > 0:
-                self.vy = -1
+                self.vy = -5
             
         if self.x + self.vx < self.WIDTH and self.x + self.vx > 0:
                 self.x += self.vx
         if self.y + self.vy < self.HEIGHT and self.y + self.vy > 0:
                 self.y += self.vy
         
-    def fire(self, event, shells, obj):  
+    def fire(self, shells, obj):  
         '''
         Firing into the player
         Return list of shells
@@ -171,7 +171,7 @@ class Enemy:
         elif obj.x - self.x > 0:
             self.an = math.atan((obj.y - self.y) / (obj.x - self.x))
         elif obj.x - self.x < 0:
-            self.an = math.atan((obj.y - self.y) / (obj.y - self.x)) + np.pi
+            self.an = math.atan((obj.y - self.y) / (obj.x - self.x)) + np.pi
             
         new_shell = Shell(self.screen, self.x, self.y)
         new_shell.vx = self.power * math.cos(self.an) // 2
