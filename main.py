@@ -17,7 +17,7 @@ FPS = 30
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 text = pygame.font.Font(None, 50)
-text_small = pygame.font.Font(None, 30)
+text_data = pygame.font.Font(None, 30)
 
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -39,11 +39,13 @@ while (status):
     player.draw()
     player.move()
     enemy.draw()
-    text_score = text_small.render(str(player.health), True, (0, 255, 0))
-    screen.blit(text_score, (20, 30))
+    text_health_player = text_data.render(str(player.health), True, (0, 255, 0))
+    screen.blit(text_health_player, (20, 30))
+    text_health_enemy = text_data.render(str(enemy.health), True, (255, 0, 0))
+    screen.blit(text_health_enemy, (90, 30))
     pygame.display.update()
     clock.tick(FPS)
-    if (player.x - enemy.x) ** 2 + (player.y - enemy.y) ** 2 <= enemy.R ** 2:
+    if (player.x - enemy.x - enemy.size/2) ** 2 + (player.y - enemy.y - enemy.size/2) ** 2 <= enemy.R ** 2:
         enemy.move_near_player(player)
         if enemy.stamina == 100:
             shells = enemy.fire(shells, player)
@@ -65,8 +67,9 @@ while (status):
             player.take_orientation(event)
         elif event.type == pygame.KEYUP:
             player.move_off()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             player.attack = True
+            player.attack_on_enemy(enemy)
         elif event.type == pygame.MOUSEBUTTONUP:
             player.attack = False
     for i in range(len(shells)):
@@ -82,7 +85,7 @@ while (status):
             #pygame.display.update()
             #clock.tick(1)
             #target.hit()
-            player.health -= 100
+            #player.health -= 10
             sh.live = 0
         
         elif player.health <= 0:
@@ -99,6 +102,7 @@ while (status):
     for i in del_shells:
         shells.pop(i)  
 
+    
     
 pygame.quit()
     

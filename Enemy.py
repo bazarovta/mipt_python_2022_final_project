@@ -92,7 +92,7 @@ class Enemy:
         self.x = x
         self.y = y
         self.stamina = 100.
-        self.health = 100.
+        self.health = 100
         self.orientation = 0
         self.attack = False 
         self.weapon = 'sword'
@@ -100,6 +100,7 @@ class Enemy:
         self.v = 0
         self.vx = 0
         self.vy = 0
+        self.size = 140
         self.cond = False
         self.step = 0
         self.R = 300
@@ -118,20 +119,20 @@ class Enemy:
             self.v = random.randint(-5, 5)
             self.orientation = random.randint(0, 1)
         if self.orientation == 0:
-            if self.x + self.v < self.WIDTH and self.x + self.v > 0:
+            if self.x + self.v + self.size < self.WIDTH and self.x + self.v > 0:
                 self.x += self.v
                 self.step -= 1
             else: 
                 self.step -= 1
         if self.orientation == 1:
-            if self.y + self.v < self.HEIGHT and self.y + self.v > 0:
+            if self.y + self.v + self.size < self.HEIGHT and self.y + self.v > 0:
                 self.y += self.v
                 self.step -= 1
             else:
                 self.step -= 1
     
     def move_near_player(self, obj):
-        if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.R ** 2 and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 > self.r ** 2:
+        if (self.x + self.size/2 - obj.x) ** 2 + (self.y + self.size/2 - obj.y) ** 2 < self.R ** 2 and (self.x + self.size/2 - obj.x) ** 2 + (self.y + self.size/2 - obj.y) ** 2 > self.r ** 2:
             if obj.x - self.x < 0:
                 self.vx = - 5
             elif obj.x - self.x > 0:
@@ -142,7 +143,7 @@ class Enemy:
             elif obj.y - self.y > 0:
                 self.vy = 5
                 
-        if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.r ** 2:
+        if (self.x + self.size/2 - obj.x) ** 2 + (self.y + self.size/2 - obj.y) ** 2 < self.r ** 2:
             if obj.x - self.x < 0:
                 self.vx =  5
             elif obj.x - self.x > 0:
@@ -153,9 +154,9 @@ class Enemy:
             elif obj.y - self.y > 0:
                 self.vy = -5
             
-        if self.x + self.vx < self.WIDTH and self.x + self.vx > 0:
+        if self.x + self.vx + self.size < self.WIDTH and self.x + self.vx > 0:
                 self.x += self.vx
-        if self.y + self.vy < self.HEIGHT and self.y + self.vy > 0:
+        if self.y + self.vy + self.size < self.HEIGHT and self.y + self.vy > 0:
                 self.y += self.vy
         
     def fire(self, shells, obj):  

@@ -33,7 +33,7 @@ class Player:
         self.x = x
         self.y = y
         self.stamina = 100.
-        self.health = 100.
+        self.health = 100
         self.orientation = 'down' 
         self.attack = False 
         self.weapon = 'sword'
@@ -53,14 +53,14 @@ class Player:
             self.orientation = 'up'
 
     def move(self):
-        dt = 0.1
+        dt = 0.2
         if self.cond == True:
             self.x += self.v * movement[self.orientation][0] * dt
             self.y += self.v * movement[self.orientation][1] * dt
 
     def vector_of_attack(self):
-        start = (self.x, self.y)
-        end = (0,0)
+        start = [self.x, self.y]
+        end = [0, 0]
         if self.weapon == 'sword':
             if self.orientation == 'left':
                 end[0] = self.x - 32 - 44
@@ -90,6 +90,11 @@ class Player:
                 self.screen.blit(im_w, (self.x - 11, self.y + 32))
             elif self.orientation == 'up':
                 self.screen.blit(im_w, (self.x - 11, self.y - 32 - 44))    
+    def attack_on_enemy(self, obj):
+        if self.attack == True:
+            start, end, power = self.vector_of_attack()
+            if (obj.x >= start[0] and obj.x <= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or (obj.x + obj.size <= start[0] and obj.x + obj.size >= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or (obj.y >= start[1] and obj.y <= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0]) or (obj.y + obj.size <= start[1] and obj.y + obj.size >= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0]):
+                obj.health -= 50
     
     def get_pos(self):
         return (self.x - 32, self.y - 32, self.x + 32, self.y + 32)
@@ -99,28 +104,4 @@ class Player:
     
     def move_off(self):
         self.cond = False
-'''pygame.init()
-X = 600
-Y = 600
-screen = pygame.display.set_mode((X, Y))
-status = True
-player = Player(screen)
-while (status):
-    screen.fill('WHITE')
-    player.draw()
-    player.move()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            status = False
-        elif event.type == pygame.KEYDOWN:
-            player.move_on()
-            player.take_orientation(event)
-        elif event.type == pygame.KEYUP:
-            player.move_off()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            player.attack = True
-        elif event.type == pygame.MOUSEBUTTONUP:
-            player.attack = False
-    
-    pygame.display.update()
-'''
+
