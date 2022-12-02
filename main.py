@@ -21,17 +21,24 @@ pygame.display.update()
 clock = pygame.time.Clock()
 finished = False
 
+shells = []
+
 
 status = True
 enemy = Enemy(screen)
 player = Player(screen)
 while (status):
+    del_shells = []
     screen.fill('WHITE')
+    
     player.draw()
     player.move()
     enemy.draw()
+    pygame.display.update()
+    clock.tick(FPS)
     if (player.x - enemy.x) ** 2 + (player.y - enemy.y) ** 2 <= enemy.R ** 2:
         enemy.move_near_player(player)
+        
     else:
         enemy.move_far_from_player()
     for event in pygame.event.get():
@@ -47,4 +54,5 @@ while (status):
         elif event.type == pygame.MOUSEBUTTONUP:
             player.attack = False
     
-    pygame.display.update()
+    
+    

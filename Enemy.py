@@ -115,7 +115,7 @@ class Enemy:
     def move_far_from_player(self):
         if self.step <= 0:
             self.step = random.randint(0, 50)
-            self.v = random.randint(-1, 1)
+            self.v = random.randint(-5, 5)
             self.orientation = random.randint(0, 1)
         if self.orientation == 0:
             if self.x + self.v < self.WIDTH and self.x + self.v > 0:
@@ -133,20 +133,20 @@ class Enemy:
     def move_near_player(self, obj):
         if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.R ** 2 and (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 > self.r ** 2:
             if obj.x - self.x < 0:
-                self.vx = - 1
+                self.vx = - 10
             elif obj.x - self.x > 0:
-                self.vx = 1
+                self.vx = 10
                 
             if obj.y - self.y < 0:
-                self.vy = - 1
+                self.vy = - 10
             elif obj.y - self.y > 0:
-                self.vy = 1
+                self.vy = 10
                 
         if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 < self.r ** 2:
             if obj.x - self.x < 0:
-                self.vx =  1
+                self.vx =  10
             elif obj.x - self.x > 0:
-                self.vx = -1
+                self.vx = -10
                 
             if obj.y - self.y < 0:
                 self.vy = 1
