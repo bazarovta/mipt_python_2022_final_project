@@ -16,6 +16,7 @@ HEIGHT = 600
 FPS = 30
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+text = pygame.font.Font(None, 24)
 
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -37,6 +38,8 @@ while (status):
     player.draw()
     player.move()
     enemy.draw()
+    text_score = text.render(str(player.health), True, (139, 0, 255))
+    screen.blit(text_score, (20, 30))
     pygame.display.update()
     clock.tick(FPS)
     if (player.x - enemy.x) ** 2 + (player.y - enemy.y) ** 2 <= enemy.R ** 2:
@@ -50,6 +53,8 @@ while (status):
             enemy.stamina = 100
     else:
         enemy.move_far_from_player()
+        
+    
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -66,18 +71,29 @@ while (status):
     for i in range(len(shells)):
         sh = shells[i]
         sh.move()
-        if sh.hittest(player) and player.live:
+        if sh.hittest(player) and player.health > 0 and sh.live > 0:
             pygame.display.update()
             screen.fill('WHITE')
-            #text_score_1 = text.render('score: ' + str(sum_score), True, (139, 0, 255))
-            #screen.blit(text_score_1, (20, 30))
+            text_score_1 = text.render(str(player.health), True, (139, 0, 255))
+            screen.blit(text_score_1, (20, 30))
             #text_score_2 = text.render('Вы уничтожили цель за ' + str(bullet) + " выстрелов", True, (0, 214, 120))
             #screen.blit(text_score_2, (250, 250))
             #pygame.display.update()
             #clock.tick(1)
-            #player.live = 0
             #target.hit()
-        if sh.live < 0:
+            player.health -= 1
+            sh.live == 0
+        
+        elif player.health <= 0:
+            pygame.display.update()
+            screen.fill('RED')
+            text_score_2 = text.render('GAME OVER', True, (0, 214, 120))
+            screen.blit(text_score_2, (250, 250))
+            while status:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        status = False
+        if sh.live < 0 and status:
             del_shells.append(i)
     for i in del_shells:
         shells.pop(i)  
