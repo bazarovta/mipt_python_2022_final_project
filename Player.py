@@ -94,7 +94,7 @@ class Player:
         if self.attack == True:
             start, end, power = self.vector_of_attack()
             if (obj.x >= start[0] and obj.x <= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or (obj.x + obj.size <= start[0] and obj.x + obj.size >= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or (obj.y >= start[1] and obj.y <= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0]) or (obj.y + obj.size <= start[1] and obj.y + obj.size >= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0]):
-                obj.health -= 50
+                obj.health -= 10
     
     def get_pos(self):
         return (self.x - 32, self.y - 32, self.x + 32, self.y + 32)

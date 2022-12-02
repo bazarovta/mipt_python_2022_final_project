@@ -75,7 +75,7 @@ while (status):
     for i in range(len(shells)):
         sh = shells[i]
         sh.move()
-        if sh.hittest(player) and player.health > 0 and sh.live > 0:
+        if sh.hittest(player) and player.health > 0 and sh.live > 0 and enemy.health > 0:
             pygame.display.update()
             screen.fill('WHITE')
             text_score_1 = text.render(str(player.health), True, (139, 0, 255))
@@ -85,10 +85,9 @@ while (status):
             #pygame.display.update()
             #clock.tick(1)
             #target.hit()
-            #player.health -= 10
+            player.health -= 10
             sh.live = 0
-        
-        elif player.health <= 0:
+        elif player.health <= 0 and enemy.health >= 0:
             screen.fill('RED')
             text_score_2 = text.render('GAME OVER', True, (0, 0, 0))
             screen.blit(text_score_2, (WIDTH / 2 - 105, HEIGHT / 2 - 50))
@@ -97,11 +96,21 @@ while (status):
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         status = False
+        
         if sh.live < 0 and status:
             del_shells.append(i)
     for i in del_shells:
         shells.pop(i)  
 
+    if player.health > 0 and enemy.health <= 0:
+        screen.fill('GREEN')
+        text_score_2 = text.render('YOU WIN', True, (0, 0, 0))
+        screen.blit(text_score_2, (WIDTH / 2 - 100, HEIGHT / 2 - 50))
+        pygame.display.update()
+        while status:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    status = False
     
     
 pygame.quit()

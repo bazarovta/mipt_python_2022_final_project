@@ -100,7 +100,7 @@ class Enemy:
         self.v = 0
         self.vx = 0
         self.vy = 0
-        self.size = 140
+        self.size = 120
         self.cond = False
         self.step = 0
         self.R = 300
@@ -164,17 +164,17 @@ class Enemy:
         Firing into the player
         Return list of shells
         '''
-        if obj.x - self.x == 0:
-            if obj.y > self.y:
+        if obj.x - self.x - self.size/2 == 0:
+            if obj.y > self.y + self.size/2:
                 self.an = math.asin(1)
             else:
                 self.an = math.asin(1) + np.pi
         elif obj.x - self.x > 0:
-            self.an = math.atan((obj.y - self.y) / (obj.x - self.x))
-        elif obj.x - self.x < 0:
-            self.an = math.atan((obj.y - self.y) / (obj.x - self.x)) + np.pi
+            self.an = math.atan((obj.y - self.y - self.size/2) / (obj.x - self.x - self.size/2))
+        elif obj.x - self.x - self.size/2 < 0:
+            self.an = math.atan((obj.y - self.y - self.size/2) / (obj.x - self.x - self.size/2)) + np.pi
             
-        new_shell = Shell(self.screen, self.x, self.y)
+        new_shell = Shell(self.screen, self.x + self.size/2, self.y + self.size/2)
         new_shell.vx = self.power * math.cos(self.an) // 2
         new_shell.vy = self.power * math.sin(self.an) // 2
         shells.append(new_shell)
