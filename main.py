@@ -16,7 +16,8 @@ HEIGHT = 600
 FPS = 30
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-text = pygame.font.Font(None, 24)
+text = pygame.font.Font(None, 50)
+text_small = pygame.font.Font(None, 30)
 
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -38,7 +39,7 @@ while (status):
     player.draw()
     player.move()
     enemy.draw()
-    text_score = text.render(str(player.health), True, (139, 0, 255))
+    text_score = text_small.render(str(player.health), True, (0, 255, 0))
     screen.blit(text_score, (20, 30))
     pygame.display.update()
     clock.tick(FPS)
@@ -81,14 +82,14 @@ while (status):
             #pygame.display.update()
             #clock.tick(1)
             #target.hit()
-            player.health -= 1
-            sh.live == 0
+            player.health -= 100
+            sh.live = 0
         
         elif player.health <= 0:
-            pygame.display.update()
             screen.fill('RED')
-            text_score_2 = text.render('GAME OVER', True, (0, 214, 120))
-            screen.blit(text_score_2, (250, 250))
+            text_score_2 = text.render('GAME OVER', True, (0, 0, 0))
+            screen.blit(text_score_2, (WIDTH / 2 - 105, HEIGHT / 2 - 50))
+            pygame.display.update()
             while status:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -97,6 +98,7 @@ while (status):
             del_shells.append(i)
     for i in del_shells:
         shells.pop(i)  
+
     
 pygame.quit()
     
