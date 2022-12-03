@@ -112,8 +112,8 @@ while (status):
         if sh.live < 0 and status:
             del_shells.append(j)
     for j in range(len(del_shells)):
-        shells.pop(j)
-    """        
+        shells.pop(j)   
+             
     if player.health > 0 and len(enemies) <= 0:
         screen.fill('GREEN')
         text_score_2 = text.render('YOU WIN', True, (0, 0, 0))
@@ -123,6 +123,6 @@ while (status):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     status = False
-    """
+
 pygame.quit()
     
