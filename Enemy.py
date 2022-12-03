@@ -89,8 +89,6 @@ class Enemy:
     
     def __init__(self, screen, x=100, y=100):
         self.screen = screen
-        self.x = x
-        self.y = y
         self.stamina = 100.
         self.health = 100
         self.orientation = 0
@@ -105,8 +103,10 @@ class Enemy:
         self.step = 0
         self.R = 300
         self.r = 200
-        self.WIDTH = 600
+        self.WIDTH = 800
         self.HEIGHT = 600
+        self.x = random.randint(0, self.WIDTH - self.size)
+        self.y = random.randint(0, self.HEIGHT - self.size)
         self.power = 20
         self.an = 0
         self.image = pygame.image.load("monsters/bamboo.png")
