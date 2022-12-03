@@ -30,7 +30,7 @@ shells = []
 status = True
 
 #N = random.randint(1, 4)
-N = 2
+N = 3
 
 enemies = []
 
@@ -89,18 +89,22 @@ while (status):
                 enemy.stamina = 100
         else:
             enemy.move_far_from_player()
+            
         if enemy.health <= 0:
             del_enemies.append(i) 
     for i in range(len(del_enemies)):
-        enemies.pop(i)
+        enemies.pop(del_enemies[i])
+        for j in range(len(del_enemies)):
+            if del_enemies[j] > del_enemies[i]:
+                del_enemies[j] -= 1
         
-    for j in range(len(shells)):
-        sh = shells[j]
+    for i in range(len(shells)):
+        sh = shells[i]
         sh.move()
-        if sh.hittest(player) and player.health > 0 and sh.live > 0:
-            player.health -= 1
+        if sh.hittest(player) and sh.live > 0:
+            player.health -= 0
             sh.live = 0
-        elif player.health <= 0:
+        if player.health <= 0:
             screen.fill('RED')
             text_score_2 = text.render('GAME OVER', True, (0, 0, 0))
             screen.blit(text_score_2, (WIDTH / 2 - 105, HEIGHT / 2 - 50))
@@ -109,10 +113,13 @@ while (status):
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         status = False
-        if sh.live < 0 and status:
-            del_shells.append(j)
-    for j in range(len(del_shells)):
-        shells.pop(j)   
+        if sh.live <= 0:
+            del_shells.append(i)
+    for i in range(len(del_shells)):
+        shells.pop(del_shells[i])
+        for j in range(len(del_shells)):
+            if del_shells[j] > del_shells[i]:
+                del_shells[j] -= 1   
              
     if player.health > 0 and len(enemies) <= 0:
         screen.fill('GREEN')
