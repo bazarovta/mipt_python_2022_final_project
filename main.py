@@ -48,7 +48,6 @@ while (status):
     for shell in shells:
         shell.draw()
     player.draw()
-    player.move()
     for enemy in enemies:
         enemy.draw()
     text_health_player = text_data.render(str(player.health), True, (0, 255, 0))
@@ -63,18 +62,14 @@ while (status):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             status = False
-        elif event.type == pygame.KEYDOWN:
-            player.move_on()
-            player.take_orientation(event)
-        elif event.type == pygame.KEYUP:
-            player.move_off()
         if event.type == pygame.MOUSEBUTTONDOWN:
             player.attack = True
             for enemy in enemies:
                 player.attack_on_enemy(enemy)
         elif event.type == pygame.MOUSEBUTTONUP:
             player.attack = False
-            
+    pressed_keys = pygame.key.get_pressed()
+    player.move(pressed_keys)
         
     for i in range(len(enemies)):
         enemy = enemies[i]

@@ -40,21 +40,24 @@ class Player:
         self.surface = image['down']
         self.v = 50
         self.r = 32
-        self.cond = False
+        #self.cond = False
 
-    def take_orientation(self, event):
-        if event.key == pygame.K_d:
-            self.orientation = 'right'
-        elif event.key == pygame.K_a:
-            self.orientation = 'left'
-        elif event.key == pygame.K_s:
-            self.orientation = 'down'
-        elif event.key == pygame.K_w:
-            self.orientation = 'up'
-
-    def move(self):
+    def move(self, keys):
         dt = 0.2
-        if self.cond == True:
+        cond = False
+        if keys[pygame.K_d]:
+           self.orientation = 'right'
+           cond = True
+        elif keys[pygame.K_a]:
+            self.orientation = 'left'
+            cond = True
+        elif keys[pygame.K_s]:
+            self.orientation = 'down'
+            cond = True
+        elif keys[pygame.K_w]:
+            self.orientation = 'up'
+            cond = True
+        if cond == True:
             self.x += self.v * movement[self.orientation][0] * dt
             self.y += self.v * movement[self.orientation][1] * dt
 
@@ -99,9 +102,9 @@ class Player:
     def get_pos(self):
         return (self.x - 32, self.y - 32, self.x + 32, self.y + 32)
 
-    def move_on(self):
+    '''def move_on(self):
         self.cond = True
     
     def move_off(self):
         self.cond = False
-
+    '''
