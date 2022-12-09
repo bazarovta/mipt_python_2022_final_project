@@ -39,7 +39,6 @@ class Obstacle:
         self.y += self.w * dt
 
     def draw(self):
-        a = 10
         image_up = pygame.transform.scale(self.image_up,
                         (self.image_up.get_width() // 5,
                         self.height + self.y))
@@ -98,7 +97,6 @@ def game_loop(screen, player):
             wall = Obstacle(screen, 1600, height, space)
             obstacles.append(wall)
         obj_remove = []
-        alive = True
         for obj in obstacles:
             obj.draw()
             obj.move()
@@ -164,3 +162,4 @@ def main():
 
 
 main()
+pygame.quit()
