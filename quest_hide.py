@@ -72,4 +72,6 @@ def main():
              agent.Agent(screen, 600, 400, 20, ('y', 350, 450))]
     player = Player.Player(screen, 32, 900-32)
     game_loop(screen, blocks, agents, player)
+
 main()
+pygame.quit()
