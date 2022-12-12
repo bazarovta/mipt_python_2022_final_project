@@ -42,7 +42,7 @@ class Player:
         self.r = 32
         #self.cond = False
 
-    def move(self, keys, dt=0.1):
+    def move(self, keys, dt=0.2):
         cond = False
         if keys[pygame.K_d]:
            self.orientation = 'right'

@@ -30,7 +30,7 @@ class Shell:
         self.vx = 0.
         self.vy = 0.
         self.color = 'RED'
-        self.WIDTH = 600
+        self.WIDTH = 1200
         self.HEIGHT = 600
         self.live = 60
         
@@ -98,7 +98,7 @@ class Enemy:
         self.v = 0
         self.vx = 0
         self.vy = 0
-        self.size = 120
+        self.size = 115
         self.cond = False
         self.step = 0
         self.R = 300
@@ -165,11 +165,11 @@ class Enemy:
         Return list of shells
         '''
         if obj.x - self.x - self.size/2 == 0:
-            if obj.y > self.y + self.size/2:
+            if obj.y >= self.y + self.size/2:
                 self.an = math.asin(1)
             else:
                 self.an = math.asin(1) + np.pi
-        elif obj.x - self.x > 0:
+        elif obj.x - self.x - self.size/2 > 0:
             self.an = math.atan((obj.y - self.y - self.size/2) / (obj.x - self.x - self.size/2))
         elif obj.x - self.x - self.size/2 < 0:
             self.an = math.atan((obj.y - self.y - self.size/2) / (obj.x - self.x - self.size/2)) + np.pi

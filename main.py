@@ -5,23 +5,25 @@ from Enemy import *
 
 import random
 
+import time
 import pygame
 
 
 def main():
     
-    WIDTH = 800
+    WIDTH = 1200
     HEIGHT = 600
     
     pygame.init()
     
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     first_font = pygame.font.SysFont("comicsansms", 35)
+    screen.fill('WHITE')
     first_page = first_font.render("Press Space", True, (255, 0, 0))
     image = pygame.image.load("quest_1/fon.png")
-    first_image = pygame.transform.scale(image, (WIDTH, HEIGHT))
-    screen.blit(first_image, (0,0))
-    screen.blit(first_page, (350, 350))
+    first_image = pygame.transform.scale(image, (600, 600))
+    screen.blit(first_image, (300,0))
+    screen.blit(first_page, (500, 350))
     pygame.display.update()
     pygame.event.clear()
     
@@ -58,6 +60,8 @@ def main():
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 break
+            
+    losing = False
 
     while (status):
         del_shells = []
@@ -122,27 +126,42 @@ def main():
                 text_score_2 = text.render('GAME OVER', True, (0, 0, 0))
                 screen.blit(text_score_2, (WIDTH / 2 - 105, HEIGHT / 2 - 50))
                 pygame.display.update()
+                time.sleep(2)
+                losing = True
+                break
+                '''
                 while status:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             status = False
+                            '''
             if sh.live <= 0:
                 del_shells.append(i)
-        for i in range(len(del_shells)):
-            shells.pop(del_shells[i])
-            for j in range(len(del_shells)):
-                if del_shells[j] > del_shells[i]:
-                    del_shells[j] -= 1   
-                
-        if player.health > 0 and len(enemies) <= 0:
-            screen.fill('GREEN')
-            text_score_2 = text.render('YOU WIN', True, (0, 0, 0))
-            screen.blit(text_score_2, (WIDTH / 2 - 100, HEIGHT / 2 - 50))
-            pygame.display.update()
-            while status:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        status = False
-    return player.health > 0
-    #pygame.quit()
-    
+        
+        if not losing:
+            for i in range(len(del_shells)):
+                shells.pop(del_shells[i])
+                for j in range(len(del_shells)):
+                    if del_shells[j] > del_shells[i]:
+                        del_shells[j] -= 1   
+                    
+            if player.health > 0 and len(enemies) <= 0:
+                screen.fill('GREEN')
+                text_score_2 = text.render('YOU WIN', True, (0, 0, 0))
+                text_advice = text_data.render('Close window to quit', True, (0, 0, 0))
+                screen.blit(text_score_2, (WIDTH / 2 - 100, HEIGHT / 2 - 50))
+                screen.blit(text_advice, (WIDTH / 2 - 125, HEIGHT / 2))
+                pygame.display.update()
+                while status:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            status = False
+        else:
+            player.health = 100
+            enemies = []
+            for i in range(N):
+                enemies.append(Enemy(screen))
+            shells = []
+            losing = False
+            
+    return player.health > 0   
