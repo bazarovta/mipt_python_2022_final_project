@@ -48,6 +48,8 @@ while finished:
         balance += 100
     draw()
     pygame.display.update()
+    
+pygame.quit()
 
 
 
