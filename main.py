@@ -123,7 +123,7 @@ def main():
                 sh.live = 0
             if player.health <= 0:
                 screen.fill('RED')
-                text_score_2 = text.render('GAME OVER', True, (0, 0, 0))
+                text_score_2 = text.render('You lost', True, (0, 0, 0))
                 screen.blit(text_score_2, (WIDTH / 2 - 105, HEIGHT / 2 - 50))
                 pygame.display.update()
                 time.sleep(2)
