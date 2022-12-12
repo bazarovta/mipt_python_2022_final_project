@@ -87,6 +87,7 @@ def game_loop(screen, player):
     check = True
     delta_t = 3
     time_font = pygame.font.SysFont("comicsansms", 35)
+    win = False
     while status:
         clock.tick(FPS)
         screen.fill('WHITE')
@@ -109,8 +110,8 @@ def game_loop(screen, player):
                 v = 75
                 delta_t = 2
             elif curr-start > 40:
-                player.jump = 15
-                player.defoult = 15
+                player.jump = 10
+                player.defoult = 10
                 height = random.randint(100, 300)
                 space = random.randint(150, 300)
                 v = 100
@@ -119,7 +120,7 @@ def game_loop(screen, player):
             obstacles.append(wall)
         if curr - start >= 60:
             status = False
-            check = True
+            win = True
         obj_remove = []
         for obj in obstacles:
             flag1 = 0
@@ -135,10 +136,8 @@ def game_loop(screen, player):
             if pos[1] < obj.height + obj.y:
                 flag4 = 1
             if flag4 + flag3 != 0 and flag2 + flag1 != 0:
-                check = False
                 status = False
             if player.y < 32 or player.y > 900 - 32:
-                check = False
                 status = False
             if obj.x < -32:
                 obj_remove.append(obj)
@@ -150,9 +149,12 @@ def game_loop(screen, player):
             obstacles.remove(obj)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                status = False
+                return -1
         pygame.display.update()
-    return check
+    if win:
+        return 1
+    else:
+        return 0
 
 def main():
     WIDTH = 900
@@ -167,13 +169,14 @@ def main():
     screen.blit(first_page, (400, 400))
     pygame.display.update()
     pygame.event.clear()
-    while True:
-        event = pygame.event.wait()
-        if event.type == pygame.QUIT:
-            pygame.quit()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                break
+    block = True
+    while block:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    block = False
     check = game_loop(screen, player)
     while check != True:
         player.x = 100
@@ -185,7 +188,13 @@ def main():
         screen.blit(second_page, (400, 400))
         pygame.display.update()
         time.sleep(2)
-        check = game_loop(screen, player)
+        c = game_loop(screen, player)
+        if c == 1:
+            check = True
+        elif c == 0:
+            check = False
+        else:
+            return False
     screen.blit(first_image, (0, 0))
     third_page = first_font.render("You Win", True, (0, 255, 255))
     screen.blit(third_page, (400, 400))
