@@ -96,8 +96,17 @@ def game_loop(screen, blocks, agents, player):
     while finished:
         clock.tick(FPS)
         screen.fill((255,255,255))
+        pygame.draw.polygon(
+                screen,
+                (0, 255, 255),
+                [(800, 50), (850, 50),
+                 (850, 100), (800, 100)]
+                 )
         draw_chart(screen, blocks)
         pressed_keys = pygame.key.get_pressed()
+        if player.x > 800 and player.y < 100:
+            win = True
+            finished = False
         player.move(blocks, pressed_keys)
         player.draw()
         for event in pygame.event.get():
@@ -168,4 +177,10 @@ def main():
             check = False
         else:
             return False
+    if check == True:
+        screen.blit(first_image, (0, 0))
+        third_page = first_font.render("You Win", True, (0, 255, 255))
+        screen.blit(third_page, (400, 400))
+        pygame.display.update()
+        time.sleep(2)
     return check
