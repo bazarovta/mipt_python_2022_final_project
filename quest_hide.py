@@ -92,7 +92,7 @@ def game_loop(screen, blocks, agents, player):
     clock = pygame.time.Clock()
     FPS = 30
     finished = True
-    lose = True
+    win = False
     while finished:
         clock.tick(FPS)
         screen.fill((255,255,255))
@@ -102,27 +102,29 @@ def game_loop(screen, blocks, agents, player):
         player.draw()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                finished = False
+                return -1
         for obj in agents:
             dist = ((player.x - obj.x)**2 + (player.y - obj.y)**2)**0.5
             if player.x == obj.x:
                 if player.y < obj.y:
-                    angle = -math.pi / 2
+                    angle = 3 * math.pi / 2
                 else:
                     angle = math.pi / 2
             elif player.x > obj.x:
-                angle = -math.atan((player.y - obj.y)/(player.x - obj.x))
+                angle = math.atan((player.y - obj.y)/(player.x - obj.x))
             else:
-                angle = math.pi - math.atan((player.y - obj.y)/(player.x - obj.x))
-            if (dist < obj.r and angle > obj.direction - obj.angle 
-                and angle < obj.direction + obj.angle):
-                lose = False
+                angle = math.pi + math.atan((player.y - obj.y)/(player.x - obj.x))
+            if (dist < obj.r and angle > obj.direction - obj.angle/2
+                and angle < obj.direction + obj.angle/2):
                 finished = False
         for obj in agents:
             obj.move()
             obj.draw()
         pygame.display.update()
-    return lose
+    if win:
+        return 1
+    else:
+        return 0
 
 def main():
     pygame.init()
@@ -146,7 +148,7 @@ def main():
     while True:
         event = pygame.event.wait()
         if event.type == pygame.QUIT:
-            pygame.quit()
+            return False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 break
@@ -156,8 +158,14 @@ def main():
         player.y = 800
         second_page = first_font.render("Failed", True, (255, 0, 0))
         screen.blit(first_image, (0,0))
-        screen.blit(second_page, (700, 400))
+        screen.blit(second_page, (350, 350))
         pygame.display.update()
         time.sleep(2)
-        check = game_loop(screen, blocks, agents, player )
-
+        c = game_loop(screen, blocks, agents, player)
+        if c == 1:
+            check = True
+        elif c == 0:
+            check = False
+        else:
+            return False
+    return check
