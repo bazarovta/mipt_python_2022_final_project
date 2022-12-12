@@ -9,15 +9,25 @@ import pygame
 
 
 def main():
-    pygame.init()
-
+    
     WIDTH = 800
     HEIGHT = 600
-
+    
+    pygame.init()
+    
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    first_font = pygame.font.SysFont("comicsansms", 35)
+    first_page = first_font.render("Press Space", True, (255, 0, 0))
+    image = pygame.image.load("quest_1/fon.png")
+    first_image = pygame.transform.scale(image, (WIDTH, HEIGHT))
+    screen.blit(first_image, (0,0))
+    screen.blit(first_page, (350, 350))
+    pygame.display.update()
+    pygame.event.clear()
+    
 
     FPS = 30
 
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     text = pygame.font.Font(None, 50)
     text_data = pygame.font.Font(None, 30)
 
@@ -41,6 +51,13 @@ def main():
 
     player = Player(screen)
 
+    while True:
+        event = pygame.event.wait()
+        if event.type == pygame.QUIT:
+            return False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                break
 
     while (status):
         del_shells = []
@@ -126,6 +143,6 @@ def main():
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         status = False
-
-    pygame.quit()
+    return player.health > 0
+    #pygame.quit()
     

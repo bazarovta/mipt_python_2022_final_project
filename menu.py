@@ -6,7 +6,8 @@ import pygame
 pygame.init()
 balance = 0
 WIDTH = 1200
-HEIGHT = 800
+HEIGHT = 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 image = pygame.image.load("menu/fon.jpg")
 image = pygame.transform.scale(image, (WIDTH, HEIGHT))
 image_q1 = pygame.image.load("quest_1/fon.png")
@@ -36,7 +37,7 @@ while finished:
             if event.pos[1] > 200 and event.pos[1] < 350:
                 if event.pos[0] > 200 and event.pos[0] < 400:
                     quest_1.main()
-                    continue
+                    draw()
                 elif event.pos[0] > 500 and event.pos[0] < 700:
                     res = quest_2.main()
                     draw()
