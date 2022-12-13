@@ -48,24 +48,18 @@ class Hero(Player.Player):
 
 def create_chart():
     chart = [ 
-      'bbbbbbbbbbbbbbbbbb',
-      'b****************b',
-      'b****************b',
-      'b****b********b**b',
-      'b****bbbbbbbbbb**b',
-      'b****b*****b*****b',
-      'b****b*****b*****b',
-      'b****************b',
-      'bbbbbb****bbbbbbbb',
-      'b****************b',
-      'b****************b',
-      'b**bbb****bbbbbbbb',
-      'b****b***********b',
-      'b****b***********b',
-      'b**bbbbbbb***bbbbb',
-      'b****************b',
-      'b****************b',
-      'bbbbbbbbbbbbbbbbbb'
+      'bbbbbbbbbbbbbbbbbbbbbbbb',
+      'b**********************b',
+      'b**bbbbbbbbbbbbb**bbb**b',
+      'b**b*****b*************b',
+      'b**bb**********b****bbbb',
+      'b***bbb**bbb***bbbbbb**b',
+      'b***b*************b****b',
+      'b***bbbbbbbbbbb***b****b',
+      'b**********************b',
+      'bbbbbbbbbbbbbbbbbbb****b',
+      'b**********************b',
+      'bbbbbbbbbbbbbbbbbbbbbbbb'
       ]
     blocks = []
     for y, line in enumerate(chart):
@@ -99,12 +93,12 @@ def game_loop(screen, blocks, agents, player):
         pygame.draw.polygon(
                 screen,
                 (0, 255, 255),
-                [(800, 50), (850, 50),
-                 (850, 100), (800, 100)]
+                [(1100, 50), (1200, 50),
+                 (1200, 100), (1100, 100)]
                  )
         draw_chart(screen, blocks)
         pressed_keys = pygame.key.get_pressed()
-        if player.x > 800 and player.y < 100:
+        if player.x > 1100 and player.y < 100:
             win = True
             finished = False
         player.move(blocks, pressed_keys)
@@ -138,22 +132,22 @@ def game_loop(screen, blocks, agents, player):
 def main():
     pygame.init()
     blocks = create_chart()
-    WIDTH = 900
-    HEIGHT = 900
+    WIDTH = 1200
+    HEIGHT = 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     first_font = pygame.font.SysFont("comicsansms", 35)
     first_page = first_font.render("Press Space", True, (255, 0, 0))
     image = pygame.image.load("quest_3/fon.jpg")
-    first_image = pygame.transform.scale(image, (900, 900))
+    first_image = pygame.transform.scale(image, (1200, 600))
     screen.blit(first_image, (0,0))
-    screen.blit(first_page, (350, 350))
+    screen.blit(first_page, (550, 250))
     pygame.display.update()
     pygame.event.clear()
     agents = [agent.Agent(screen, 150, 300, 20, ('x', 100, 200)),
              agent.Agent(screen, 700, 350, 20, ('y', 325, 375)),
              agent.Agent(screen, 600, 820, 20, ('x', 550, 650)),
              agent.Agent(screen, 150, 650, 20, ('x', 125, 175))]
-    player = Hero(screen, 100, 800)
+    player = Hero(screen, 100, 525)
     while True:
         event = pygame.event.wait()
         if event.type == pygame.QUIT:
@@ -161,26 +155,28 @@ def main():
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 break
-    check = game_loop(screen, blocks, agents, player)
+    check = False
     while check != True:
         player.x = 100
-        player.y = 800
-        second_page = first_font.render("Failed", True, (255, 0, 0))
-        screen.blit(first_image, (0,0))
-        screen.blit(second_page, (350, 350))
-        pygame.display.update()
-        time.sleep(2)
+        player.y = 525
         c = game_loop(screen, blocks, agents, player)
         if c == 1:
             check = True
+            break
         elif c == 0:
             check = False
         else:
             return False
+        second_page = first_font.render("Failed", True, (255, 0, 0))
+        screen.blit(first_image, (0,0))
+        screen.blit(second_page, (550, 250))
+        pygame.display.update()
+        time.sleep(2)
+        c = game_loop(screen, blocks, agents, player)
     if check == True:
         screen.blit(first_image, (0, 0))
         third_page = first_font.render("You Win", True, (0, 255, 255))
-        screen.blit(third_page, (400, 400))
+        screen.blit(third_page, (550, 250))
         pygame.display.update()
         time.sleep(2)
     return check

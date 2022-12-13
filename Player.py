@@ -1,4 +1,5 @@
 import pygame
+
 image = {} #размер каждой картинки 64x64
 image['down'] = pygame.image.load("move/down.png")
 image['up'] = pygame.image.load("move/up.png")
@@ -30,11 +31,13 @@ class Player:
     
     def __init__(self, screen, x=450, y=450):
         self.screen = screen
+
         self.x = x
         self.y = y
-        self.stamina = 100.
+
         self.health = 100
-        self.orientation = 'down' 
+        self.orientation = 'down'
+        self.stamina  = 100
         self.attack = False 
         self.weapon = 'sword'
         self.surface = image['down']
@@ -44,6 +47,7 @@ class Player:
 
     def move(self, keys, dt=0.2):
         cond = False
+
         if keys[pygame.K_d]:
            self.orientation = 'right'
            cond = True
@@ -56,6 +60,7 @@ class Player:
         elif keys[pygame.K_w]:
             self.orientation = 'up'
             cond = True
+
         if cond == True:
             self.x += self.v * movement[self.orientation][0] * dt
             self.y += self.v * movement[self.orientation][1] * dt
@@ -63,6 +68,7 @@ class Player:
     def vector_of_attack(self):
         start = [self.x, self.y]
         end = [0, 0]
+
         if self.weapon == 'sword':
             if self.orientation == 'left':
                 end[0] = self.x - 32 - 44
@@ -76,12 +82,15 @@ class Player:
             else:
                 end[0] = self.x
                 end[1] = self.y + 32 + 44
+
         power = 5 * self.stamina/100
+
         return (start, end, power)
 
     def draw(self):
         im = image[self.orientation]
         self.screen.blit(im, (self.x - 32, self.y - 32))
+
         if self.attack == True:
             im_w = sword[self.orientation]
             if self.orientation == 'left':
@@ -92,6 +101,7 @@ class Player:
                 self.screen.blit(im_w, (self.x - 11, self.y + 32))
             elif self.orientation == 'up':
                 self.screen.blit(im_w, (self.x - 11, self.y - 32 - 44))    
+    
     def attack_on_enemy(self, obj):
         if self.attack == True:
             start, end, power = self.vector_of_attack()
@@ -100,10 +110,3 @@ class Player:
     
     def get_pos(self):
         return (self.x - 32, self.y - 32, self.x + 32, self.y + 32)
-
-    '''def move_on(self):
-        self.cond = True
-    
-    def move_off(self):
-        self.cond = False
-    '''

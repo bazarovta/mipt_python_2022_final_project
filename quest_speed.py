@@ -3,7 +3,6 @@ import Player
 import time
 import random
 
-
 class Obstacle:
     '''
     Class Obstacle
@@ -21,12 +20,18 @@ class Obstacle:
 
     def __init__(self, screen, x, height, space, v):
         self.screen = screen
+
+        self.stage = 1
+
         self.x = x
         self.y = 0
+
         self.height = height
         self.space = space
+
         self.v = v
         self.w = 20
+
         self.image_up = pygame.image.load('quest_2/image_up.png')
         self.image_down = pygame.image.load('quest_2/image_down.png')
         self.width = self.image_up.get_width() // 5
@@ -34,17 +39,20 @@ class Obstacle:
     def move(self):
         dt = 0.1
         self.x -= self.v * dt
-        if self.y >= 100 or self.y < 0:
-            self.w = - self.w
-        self.y += self.w * dt
+        if self.stage == 2:
+            if self.y >= 100 or self.y < 0:
+                self.w = - self.w
+            self.y += self.w * dt
 
     def draw(self):
         image_up = pygame.transform.scale(self.image_up,
-                        (self.image_up.get_width() // 5,
+                        (self.width,
                         self.height + self.y))
+
         image_down = pygame.transform.scale(self.image_down,
-                        (self.image_down.get_width() // 5,
-                        900 - self.height - self.space - self.y))
+                        (self.width,
+                        600 - self.height - self.space - self.y))
+
         self.screen.blit(image_up, (self.x, 0))
         self.screen.blit(image_down,
                         (self.x, self.y + self.height + self.space))
@@ -58,69 +66,83 @@ class MyPlayer(Player.Player):
         move - change y-coordinate of player;
         draw - draw player
     '''
-
-    def __init__(self, screen, x=32, y=450, v=10):
+    
+    def __init__(self, screen, x=32, y=450):
         super().__init__(screen, x, y)
-        self.cond = False
-        self.v = v
+
         self.image = pygame.image.load("move/down.png")
-        self.defoult = 10
-        self.jump = 10
+        self.im_size = 32
+        self.image = pygame.transform.scale(self.image, (self.im_size, self.im_size))
+
+        self.up = 10
+        self.down = 10
 
     def move(self, keys):
         if keys[pygame.K_SPACE]:
-            self.y += self.defoult
+            self.y += self.up
         else:
-            self.y -= self.jump
+            self.y -= self.down
 
     def draw(self):
-        self.screen.blit(self.image, (self.x - 32, self.y - 32))
+        self.screen.blit(self.image, (self.x - self.im_size/2, self.y - self.im_size/2))
+
+    def get_pos(self):
+        return (self.x - self.im_size/2, self.y - self.im_size/2,
+                self.x + self.im_size/2, self.y + self.im_size/2)
 
 def game_loop(screen, player):
-    status = True;
+    status = True
+
     start = time.time()
     prev = time.time()
+
     clock = pygame.time.Clock()
     FPS = 30
-    obstacles = []
-    pygame.event.clear()
+
+    obstacles = [Obstacle(screen, 1200, 200, 200, 50)]
     check = True
     delta_t = 3
     time_font = pygame.font.SysFont("comicsansms", 35)
+
     win = False
+
     while status:
         clock.tick(FPS)
+        
         screen.fill('WHITE')
+        
         pressed_keys = pygame.key.get_pressed()
         player.move(pressed_keys)
         player.draw()
         pos = player.get_pos()
+
         curr = time.time() 
         if curr-prev >= delta_t:
             prev = curr
             if curr-start <= 20:
-                height = random.randint(200, 400)
+                height = random.randint(100, 200)
                 space = random.randint(200, 300)
                 v = 50
             elif curr-start > 20 and curr-start <= 40:
-                player.jump = -12
-                player.defoult = -12
-                height = random.randint(150, 300)
-                space = random.randint(150, 300)
+                obj.stage = 2
+                height = random.randint(100, 250)
+                space = random.randint(200, 250)
                 v = 75
                 delta_t = 2
-            elif curr-start > 40:
-                player.jump = 10
-                player.defoult = 10
+            elif curr-start > 40 and curr - start < 60:
                 height = random.randint(100, 300)
-                space = random.randint(150, 300)
+                space = random.randint(150, 200)
                 v = 100
                 delta_t = 1
-            wall = Obstacle(screen, 900, height, space, v)
-            obstacles.append(wall)
-        if curr - start >= 60:
-            status = False
+            if curr - start <= 60:
+                wall = Obstacle(screen, 1200, height, space, v)
+                obstacles.append(wall)
+
+        if curr - start >= 65:
+            time.sleep(1)
             win = True
+            status = False
+            
         obj_remove = []
         for obj in obstacles:
             flag1 = 0
@@ -143,30 +165,38 @@ def game_loop(screen, player):
                 obj_remove.append(obj)
             obj.draw()
             obj.move()
-        time_draw = time_font.render("Time: " + str(round(curr - start, 3)), True, (0, 255, 0))
+
+        if player.y < 32 or player.y > 600 - 32:
+            status = False
+
+        time_draw = time_font.render("Time: " + str(int(curr - start)), True, (0, 255, 0))
         screen.blit(time_draw, (0, 0))
+
         for obj in obj_remove:
             obstacles.remove(obj)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return -1
+            
         pygame.display.update()
+
     if win:
         return 1
     else:
         return 0
 
 def main():
-    WIDTH = 900
-    HEIGHT = 900
+    WIDTH = 1200
+    HEIGHT = 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    player = MyPlayer(screen, 100, 450)
+    player = MyPlayer(screen, 200, 300)
     first_font = pygame.font.SysFont("comicsansms", 35)
     first_page = first_font.render("Press Space", True, (255, 0, 0))
     image = pygame.image.load("quest_2/fon.jpg")
-    first_image = pygame.transform.scale(image, (900, 900))
+    first_image = pygame.transform.scale(image, (1200, 600))
     screen.blit(first_image, (0,0))
-    screen.blit(first_page, (400, 400))
+    screen.blit(first_page, (550, 250))
     pygame.display.update()
     pygame.event.clear()
     block = True
@@ -179,13 +209,13 @@ def main():
                     block = False
     check = game_loop(screen, player)
     while check != True:
-        player.x = 100
-        player.y = 450
-        player.defoult = 10
-        player.jump = 10
+        player.x = 200
+        player.y = 300
+        player.defoult = 5
+        player.jump = 5
         second_page = first_font.render("Failed", True, (255, 0, 0))
         screen.blit(first_image, (0,0))
-        screen.blit(second_page, (400, 400))
+        screen.blit(second_page, (550, 250))
         pygame.display.update()
         time.sleep(2)
         c = game_loop(screen, player)
@@ -197,7 +227,7 @@ def main():
             return False
     screen.blit(first_image, (0, 0))
     third_page = first_font.render("You Win", True, (0, 255, 255))
-    screen.blit(third_page, (400, 400))
+    screen.blit(third_page, (550, 300))
     pygame.display.update()
     time.sleep(2)
     return check
