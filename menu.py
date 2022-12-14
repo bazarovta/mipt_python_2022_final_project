@@ -17,7 +17,7 @@ image_q2 = pygame.image.load("quest_2/fon.jpg")
 image_q2 = pygame.transform.scale(image_q2, (200, 150))
 image_q3 = pygame.image.load("quest_3/fon.jpg")
 image_q3 = pygame.transform.scale(image_q3, (200, 150))
-image_m = pygame.image.load("quest_3/fon.jpg")
+image_m = pygame.image.load("market/fon_s.png")
 image_m = pygame.transform.scale(image_m, (200, 150))
 
 def draw():
