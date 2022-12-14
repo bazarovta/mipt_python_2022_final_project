@@ -13,21 +13,25 @@ sword['right'] = pygame.image.load("sword/right.png") #44x24
 movement = {'right': [1, 0], 'left': [-1, 0],
             'down': [0, 1], 'up': [0, -1]}
 
+
+
 class Player:
     '''
     Class Player
     var:
-        screen; x,y - player location; stamina; health; 
-        orientation - show where he looking(up right down left);
-        attack - show his condition(True - attack, False - peace);
-        weapon - type of weapon(sword, ...)
+        screen; x,y --- player location; stamina; health; 
+        orientation --- show where he looking(up right down left);
+        attack --- show his condition(True - attack, False - peace);
+        weapon --- type of weapon(sword, ...)
     method:
-        move - change player coordinates;
-        vector_of_attack - return coordinates of line along which he make damage
+        move --- change player coordinates;
+        vector_of_attack --- return coordinates of line along which he make damage
                            and power of hit;
+        attacking_on_enemy --- player attacks enemies
         draw - draw a player;
         
     '''
+    
     
     def __init__(self, screen, x=450, y=450):
         self.screen = screen
@@ -44,6 +48,7 @@ class Player:
         self.v = 50
         self.r = 32
         #self.cond = False
+
 
     def move(self, keys, dt=0.2):
         cond = False
@@ -64,6 +69,7 @@ class Player:
         if cond == True:
             self.x += self.v * movement[self.orientation][0] * dt
             self.y += self.v * movement[self.orientation][1] * dt
+
 
     def vector_of_attack(self):
         start = [self.x, self.y]
@@ -87,6 +93,7 @@ class Player:
 
         return (start, end, power)
 
+
     def draw(self):
         im = image[self.orientation]
         self.screen.blit(im, (self.x - 32, self.y - 32))
@@ -102,10 +109,14 @@ class Player:
             elif self.orientation == 'up':
                 self.screen.blit(im_w, (self.x - 11, self.y - 32 - 44))    
     
+    
     def attack_on_enemy(self, obj):
         if self.attack == True:
             start, end, power = self.vector_of_attack()
-            if (obj.x >= start[0] and obj.x <= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or (obj.x + obj.size <= start[0] and obj.x + obj.size >= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or (obj.y >= start[1] and obj.y <= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0]) or (obj.y + obj.size <= start[1] and obj.y + obj.size >= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0]):
+            if ((obj.x >= start[0] and obj.x <= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or 
+                (obj.x + obj.size <= start[0] and obj.x + obj.size >= end[0] and obj.y <= start[1] and obj.y + obj.size >= start[1]) or 
+                (obj.y >= start[1] and obj.y <= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0]) or 
+                (obj.y + obj.size <= start[1] and obj.y + obj.size >= end[1] and obj.x <= start[0] and obj.x + obj.size >= start[0])):
                 obj.health -= 10
     
     def get_pos(self):

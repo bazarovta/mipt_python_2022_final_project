@@ -21,6 +21,21 @@ movement = {'right': [1, 0], 'left': [-1, 0],
 
 
 class Shell:
+    '''
+    Class Shell
+    var:
+        screen; x,y --- shell's location; 
+        r --- shell's radius
+        vx --- x velocity during fight;
+        vy --- y velocity during fight;
+        color;
+        WIDTH and HEIGHT --- size of screen;
+        live --- shell's life "time"
+    method:
+        move;
+        draw;
+        hittest --- checking if shell hits the object;
+    '''
     def __init__(self, screen: pygame.Surface, x, y):
         
         self.screen = screen
@@ -56,12 +71,6 @@ class Shell:
         )
 
     def hittest(self, obj):
-        """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
-        Args:
-            obj: Обьект, с которым проверяется столкновение.
-        Returns:
-            Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
-        """
         if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 <= (self.r + obj.r) ** 2:
             return True
         else:
@@ -72,19 +81,25 @@ class Enemy:
     '''
     Class Enemy
     var:
-        screen; x,y - player location; stamina; health; 
-        orientation - show where he looking(up right down left);
-        attack - show his condition(True - attack, False - peace);
-        weapon - type of weapon(sword, ...)
+        screen; x,y --- player location; stamina; health; 
+        orientation --- show where he looking(0 - right, 1 - up);
+        attack --- show his condition(True - attack, False - peace);
+        weapon --- type of weapon(sword, ...);
+        v --- random velocity;
+        vx --- x velocity during fight;
+        vy --- y velocity during fight;
+        step --- random number of steps;
+        WIDTH and HEIGHT --- size of screen;
+        power --- power of attack;
+        an --- angular of targeting;
+        size;
     method:
-        move - change player coordinates;
-        vector_of_attack - return coordinates of line along which he make damage
+        move_far_from_player (random walks);
+        move_near_player --- enemy moving during attacking;
+        fire --- firing into the player, return list of shells;
+        vector_of_attack --- return coordinates of line along which he make damage
                            and power of hit;
-        draw - draw a player;
-        
-        0 - right
-        1 - up
-        
+        draw --- draw a player;
     '''
     
     def __init__(self, screen, x=100, y=100):
@@ -93,17 +108,15 @@ class Enemy:
         self.health = 100
         self.orientation = 0
         self.attack = False 
-        self.weapon = 'sword'
         self.surface = image['down']
         self.v = 0
         self.vx = 0
         self.vy = 0
         self.size = 115
-        self.cond = False
         self.step = 0
         self.R = 300
         self.r = 200
-        self.WIDTH = 800
+        self.WIDTH = 1200
         self.HEIGHT = 600
         self.x = random.randint(0, self.WIDTH - self.size)
         self.y = random.randint(0, self.HEIGHT - self.size)
@@ -182,22 +195,4 @@ class Enemy:
         
 
     def draw(self):
-        self.screen.blit(self.image, (self.x - 32, self.y - 32))
-        '''
-        if self.attack == True:
-            im_w = sword[self.orientation]
-            if self.orientation == 'left':
-                self.screen.blit(im_w, (self.x - 32 - 44, self.y - 11))
-            elif self.orientation == 'right':
-                self.screen.blit(im_w, (self.x + 32, self.y - 11))
-            elif self.orientation == 'down':
-                self.screen.blit(im_w, (self.x - 11, self.y + 32))
-            elif self.orientation == 'up':
-                self.screen.blit(im_w, (self.x - 11, self.y - 32 - 44))   
-        ''' 
-    
-    '''
-    def get_pos(self):
-        return (self.x - 32, self.y - 32, self.x + 32, self.y + 32)
-    '''
-        
+        self.screen.blit(self.image, (self.x - self.size / 2, self.y - self.size / 2))      

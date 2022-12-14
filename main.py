@@ -10,7 +10,9 @@ import pygame
 
 
 def main():
-    
+    '''
+    the main program
+    '''
     WIDTH = 1200
     HEIGHT = 600
     
@@ -24,6 +26,7 @@ def main():
     first_image = pygame.transform.scale(image, (600, 600))
     screen.blit(first_image, (300,0))
     screen.blit(first_page, (500, 350))
+    
     pygame.display.update()
     pygame.event.clear()
     
@@ -32,9 +35,9 @@ def main():
 
     text = pygame.font.Font(None, 50)
     text_data = pygame.font.Font(None, 30)
-
-    pygame.display.update()
+    
     clock = pygame.time.Clock()
+    
     finished = False
 
     shells = []
@@ -129,12 +132,6 @@ def main():
                 time.sleep(2)
                 losing = True
                 break
-                '''
-                while status:
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            status = False
-                            '''
             if sh.live <= 0:
                 del_shells.append(i)
         
