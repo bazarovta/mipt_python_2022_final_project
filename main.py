@@ -123,7 +123,7 @@ def main():
             sh = shells[i]
             sh.move()
             if sh.hittest(player) and sh.live > 0:
-                player.health -= 0
+                player.health -= 10
                 sh.live = 0
             if player.health <= 0:
                 screen.fill('RED')
