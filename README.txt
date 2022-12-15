@@ -1,1 +1,2 @@
-our game
+MIPT Final project of python cousrse.
+
