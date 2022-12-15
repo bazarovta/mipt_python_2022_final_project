@@ -167,9 +167,10 @@ def main():
             check = False
         else:
             return False
-        second_page = first_font.render("Failed", True, (255, 0, 0))
-        screen.blit(first_image, (0,0))
-        screen.blit(second_page, (550, 250))
+        if check != True:
+            second_page = first_font.render("Failed", True, (255, 0, 0))
+            screen.blit(first_image, (0,0))
+            screen.blit(second_page, (550, 250))
         pygame.display.update()
         time.sleep(2)
     if check == True:
