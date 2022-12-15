@@ -112,7 +112,7 @@ class Enemy:
         self.v = 0
         self.vx = 0
         self.vy = 0
-        self.size = 115
+        self.size = 128
         self.step = 0
         self.R = 300
         self.r = 200
@@ -145,7 +145,8 @@ class Enemy:
                 self.step -= 1
     
     def move_near_player(self, obj):
-        if (self.x + self.size/2 - obj.x) ** 2 + (self.y + self.size/2 - obj.y) ** 2 < self.R ** 2 and (self.x + self.size/2 - obj.x) ** 2 + (self.y + self.size/2 - obj.y) ** 2 > self.r ** 2:
+        if ((self.x + self.size/2 - obj.x) ** 2 + (self.y + self.size/2 - obj.y) ** 2 < self.R ** 2 and 
+            (self.x + self.size/2 - obj.x) ** 2 + (self.y + self.size/2 - obj.y) ** 2 > self.r ** 2):
             if obj.x - self.x < 0:
                 self.vx = - 5
             elif obj.x - self.x > 0:
@@ -195,4 +196,4 @@ class Enemy:
         
 
     def draw(self):
-        self.screen.blit(self.image, (self.x - self.size / 2, self.y - self.size / 2))      
+        self.screen.blit(self.image, (self.x, self.y))      

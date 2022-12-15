@@ -64,6 +64,7 @@ def main():
             if event.key == pygame.K_SPACE:
                 break
             
+    life = False
     losing = False
 
     while (status):
@@ -122,7 +123,7 @@ def main():
             sh = shells[i]
             sh.move()
             if sh.hittest(player) and sh.live > 0:
-                player.health -= 10
+                player.health -= 0
                 sh.live = 0
             if player.health <= 0:
                 screen.fill('RED')
@@ -144,6 +145,7 @@ def main():
                     
             if player.health > 0 and len(enemies) <= 0:
                 screen.fill('GREEN')
+                life = True
                 text_score_2 = text.render('YOU WIN', True, (0, 0, 0))
                 text_advice = text_data.render('Close window to quit', True, (0, 0, 0))
                 screen.blit(text_score_2, (WIDTH / 2 - 100, HEIGHT / 2 - 50))
@@ -161,4 +163,4 @@ def main():
             shells = []
             losing = False
             
-    return player.health > 0   
+    return life  

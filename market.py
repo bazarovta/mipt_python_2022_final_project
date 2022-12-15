@@ -1,6 +1,6 @@
 import pygame
 import time
-from pyvidplayer import Video
+#from pyvidplayer import Video
 
 def draw(screen, image, WIDTH, HEIGHT, balance):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
