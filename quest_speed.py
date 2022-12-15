@@ -38,7 +38,9 @@ class Obstacle:
     
     def move(self):
         dt = 0.1
+
         self.x -= self.v * dt
+        
         if self.stage == 2:
             if self.y >= 100 or self.y < 0:
                 self.w = - self.w
@@ -72,7 +74,8 @@ class MyPlayer(Player.Player):
 
         self.image = pygame.image.load("move/down.png")
         self.im_size = 32
-        self.image = pygame.transform.scale(self.image, (self.im_size, self.im_size))
+        self.image = pygame.transform.scale(self.image, 
+                                           (self.im_size, self.im_size))
 
         self.up = 10
         self.down = 10
@@ -84,7 +87,8 @@ class MyPlayer(Player.Player):
             self.y -= self.down
 
     def draw(self):
-        self.screen.blit(self.image, (self.x - self.im_size/2, self.y - self.im_size/2))
+        self.screen.blit(self.image, (self.x - self.im_size/2,
+                                      self.y - self.im_size/2))
 
     def get_pos(self):
         return (self.x - self.im_size/2, self.y - self.im_size/2,
@@ -138,8 +142,7 @@ def game_loop(screen, player):
                 wall = Obstacle(screen, 1200, height, space, v)
                 obstacles.append(wall)
 
-        if curr - start >= 65:
-            time.sleep(1)
+        if curr - start >= 63:
             win = True
             status = False
             
@@ -169,7 +172,8 @@ def game_loop(screen, player):
         if player.y < 32 or player.y > 600 - 32:
             status = False
 
-        time_draw = time_font.render("Time: " + str(int(curr - start)), True, (0, 255, 0))
+        time_draw = time_font.render("Time: " + str(int(curr - start)),
+                                    True, (0, 255, 0))
         screen.blit(time_draw, (0, 0))
 
         for obj in obj_remove:
@@ -242,5 +246,6 @@ def main(music):
     time.sleep(2)
     if music == True:
         pygame.mixer.music.pause()
+
     return check
 

@@ -5,10 +5,9 @@ import market
 import pygame
 
 pygame.init()
-balance = 10000
+
 WIDTH = 1200
 HEIGHT = 600
-music = False
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 image = pygame.image.load("menu/fon.jpg")
 image = pygame.transform.scale(image, (WIDTH, HEIGHT))
@@ -21,6 +20,9 @@ image_q3 = pygame.transform.scale(image_q3, (200, 150))
 image_m = pygame.image.load("market/fon_s.png")
 image_m = pygame.transform.scale(image_m, (200, 150))
 
+balance = 500
+music = False
+
 def draw():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     screen.blit(image, (0, 0))
@@ -29,10 +31,13 @@ def draw():
     screen.blit(image_q3, (800, 200))
     screen.blit(image_m, (500, 400))
     balance_font = pygame.font.SysFont("comicsansms", 35)
-    balance_draw = balance_font.render("Your balance: " + str(balance), True, (255, 255, 0))
+    balance_draw = balance_font.render("Your balance: " + str(balance),
+                                        True, (255, 255, 0))
     screen.blit(balance_draw, (0, 0))
+
 finished = True
 draw()
+
 while finished:
     
     res = False
@@ -57,7 +62,8 @@ while finished:
             and (event.pos[0] > 500 and event.pos[0] < 700)):
                 market_return = market.main(balance)
                 balance = market_return[0]
-                music = market_return[1][0]
+                music = market_return[1]
+
     if res == True:
         balance += 100
     

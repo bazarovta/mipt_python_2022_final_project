@@ -89,6 +89,7 @@ def game_loop(screen, blocks, agents, player):
     win = False
     while finished:
         clock.tick(FPS)
+        
         screen.fill((255,255,255))
         pygame.draw.polygon(
                 screen,
@@ -96,16 +97,21 @@ def game_loop(screen, blocks, agents, player):
                 [(1100, 50), (1200, 50),
                  (1200, 100), (1100, 100)]
                  )
+        
         draw_chart(screen, blocks)
-        pressed_keys = pygame.key.get_pressed()
+        
         if player.x > 1100 and player.y < 100:
             win = True
             finished = False
+        
+        pressed_keys = pygame.key.get_pressed()
         player.move(blocks, pressed_keys)
         player.draw()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return -1
+        
         for obj in agents:
             dist = ((player.x - obj.x)**2 + (player.y - obj.y)**2)**0.5
             if player.x == obj.x:
@@ -123,7 +129,9 @@ def game_loop(screen, blocks, agents, player):
         for obj in agents:
             obj.move()
             obj.draw()
+        
         pygame.display.update()
+        
     if win:
         return 1
     else:
@@ -131,7 +139,7 @@ def game_loop(screen, blocks, agents, player):
 
 def main():
     pygame.init()
-    blocks = create_chart()
+    
     WIDTH = 1200
     HEIGHT = 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -143,11 +151,15 @@ def main():
     screen.blit(first_page, (550, 250))
     pygame.display.update()
     pygame.event.clear()
-    agents = [agent.Agent(screen, 150, 300, 20, ('x', 100, 200)),
-             agent.Agent(screen, 700, 350, 20, ('y', 325, 375)),
-             agent.Agent(screen, 600, 820, 20, ('x', 550, 650)),
-             agent.Agent(screen, 150, 650, 20, ('x', 125, 175))]
+    
+    blocks = create_chart()
+    
+    agents = [agent.Agent(screen, 150, 300, 20, ('x', 100, 150)),
+             agent.Agent(screen, 800, 375, 20, ('y', 350, 400)),
+             agent.Agent(screen, 845, 125, 20, ('y', 100, 150))]
+    		
     player = Hero(screen, 100, 525)
+    
     while True:
         event = pygame.event.wait()
         if event.type == pygame.QUIT:
@@ -155,11 +167,14 @@ def main():
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 break
+    
     check = False
     while check != True:
         player.x = 100
         player.y = 525
+        
         c = game_loop(screen, blocks, agents, player)
+        
         if c == 1:
             check = True
             break
@@ -167,16 +182,21 @@ def main():
             check = False
         else:
             return False
+        
         if check != True:
             second_page = first_font.render("Failed", True, (255, 0, 0))
             screen.blit(first_image, (0,0))
             screen.blit(second_page, (550, 250))
+        
         pygame.display.update()
+        
         time.sleep(2)
+    
     if check == True:
         screen.blit(first_image, (0, 0))
         third_page = first_font.render("You Win", True, (0, 255, 255))
         screen.blit(third_page, (550, 250))
         pygame.display.update()
         time.sleep(2)
+        
     return check

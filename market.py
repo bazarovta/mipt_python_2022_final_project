@@ -1,10 +1,6 @@
 import pygame
 import time
 from pyvidplayer import Video
-from ffpyplayer.player import MediaPlayer
-from ffpyplayer.tools import set_loglevel
-from pymediainfo import MediaInfo
-from errno import ENOENT
 
 def draw(screen, image, WIDTH, HEIGHT, balance):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,7 +9,8 @@ def draw(screen, image, WIDTH, HEIGHT, balance):
     screen.blit(image[2], (500, 200))
     screen.blit(image[3], (800, 200))
     balance_font = pygame.font.SysFont("comicsansms", 35)
-    balance_draw = balance_font.render("Your balance: " + str(balance), True, (255, 255, 0))
+    balance_draw = balance_font.render("Your balance: " + str(balance),
+                                        True, (255, 255, 0))
     screen.blit(balance_draw, (0, 0))
 
 def wind_2(screen):
@@ -37,8 +34,6 @@ def wind_3(screen):
         vid.draw(win, (0, 0))
         pygame.display.update()
 
-
-pygame.quit()
 def main(balance):   
     WIDTH = 1200
     HEIGHT = 600
@@ -56,7 +51,7 @@ def main(balance):
     image.append(pygame.image.load("market/wind_3_albert.jpg"))
     image[3] = pygame.transform.scale(image[3], (200, 150))
     
-    buys = [False, False, False]
+    music = False
 
     finished = False
 
@@ -71,23 +66,21 @@ def main(balance):
                 if event.pos[1] > 200 and event.pos[1] < 350:
                     if event.pos[0] > 200 and event.pos[0] < 400:
                         if balance >= price[0]:
-                            buys[0] = True
+                            music = True
                             balance -= price[0]
                     elif event.pos[0] > 500 and event.pos[0] < 700:
                         if balance >= price[1]:
-                            buys[1] = True
                             wind_2(screen)
                             balance -= price[1]
-                    elif event.pos[0] > 800 and event.pos[0] < 1000:
-                        if balance >= price[2]:
-                            buys[2] = True
-                            wind_3(screen)
-                            balance -= price[2]
+                    #elif event.pos[0] > 800 and event.pos[0] < 1000:
+                        #if balance >= price[2]:
+                            #wind_3(screen)
+                            #balance -= price[2]
 
         draw(screen, image, WIDTH, HEIGHT, balance)
         pygame.display.update()
         
-    return (balance, buys)
+    return (balance, music)
 
 
 

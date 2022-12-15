@@ -2,6 +2,20 @@ import math
 import pygame
 
 class Agent:
+    '''
+    Class Agent
+    var:
+        screen; x,y - agent position;
+        v; boundary - available place to move;
+        r - length of vision;
+        angle - area of vision;
+        direction - angle where he watch;
+        lines - number of line;
+        a = radius of agent;
+    method:
+        draw;
+        move;
+    '''
     
     def __init__(self,screen, x, y, v, boundary):
         self.screen = screen
@@ -9,10 +23,10 @@ class Agent:
         self.y = y
         self.v = v
         self.boundary = boundary
-        self.r = 70
+        self.r = 40
         self.angle = math.pi/3
-        self.direction = math.pi/3
-        self.lines = 100
+        self.direction = 0
+        self.lines = 500
         self.w = math.pi / 10
         self.a = 10
 
@@ -40,6 +54,7 @@ class Agent:
                 (self.x, self.y),
                 self.a
                 )
+
     def move(self):
         dt = 0.1
         if self.boundary[0] == 'y':
