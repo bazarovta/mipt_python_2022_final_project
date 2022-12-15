@@ -1,9 +1,10 @@
 import pygame
 import time
 from pyvidplayer import Video
-
-vid = Video("market/video.mp4")
-vid.set_size((1200, 600))
+from ffpyplayer.player import MediaPlayer
+from ffpyplayer.tools import set_loglevel
+from pymediainfo import MediaInfo
+from errno import ENOENT
 
 def draw(screen, image, WIDTH, HEIGHT, balance):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -23,14 +24,18 @@ def wind_2(screen):
     time.sleep(3)
 
 def wind_3(screen):
-    start = time.time()
-    while True:
-        vid.draw(screen, (0, 0))
+    vid = Video("market/video.mp4")
+    win = pygame.display.set_mode((1200, 600))
+    finished = True
+    clock = pygame.time.Clock()
+    while finished:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                vid.close()
+                finished = False
+        clock.tick(60)
+        vid.draw(win, (0, 0))
         pygame.display.update()
-        if time.time() - start > 10:
-            break
-    time.sleep(1)
-    vid.close()
 
 
 pygame.quit()

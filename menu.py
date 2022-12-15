@@ -5,7 +5,7 @@ import market
 import pygame
 
 pygame.init()
-balance = 0
+balance = 10000
 WIDTH = 1200
 HEIGHT = 600
 music = False
