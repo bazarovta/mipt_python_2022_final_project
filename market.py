@@ -1,5 +1,6 @@
 import pygame
 import time
+from pyvidplayer import Video
 
 def draw(screen, image, WIDTH, HEIGHT, balance):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -19,7 +20,16 @@ def wind_2(screen):
     time.sleep(3)
 
 def wind_3(screen):
-    pass
+    vid = Video("market/video.mp4")
+    vid.set_size((1200, 600))
+    start = time.time()
+    while True:
+        vid.draw(screen, (0, 0))
+        pygame.display.update()
+        if time.time() - start > 0.5:
+            break
+    time.sleep(1)
+
 
 pygame.quit()
 def main(balance):   
