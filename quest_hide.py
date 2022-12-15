@@ -172,7 +172,6 @@ def main():
         screen.blit(second_page, (550, 250))
         pygame.display.update()
         time.sleep(2)
-        c = game_loop(screen, blocks, agents, player)
     if check == True:
         screen.blit(first_image, (0, 0))
         third_page = first_font.render("You Win", True, (0, 255, 255))

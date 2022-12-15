@@ -1,5 +1,5 @@
 import pygame
-
+import time
 
 def draw(screen, image, WIDTH, HEIGHT, balance):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -11,6 +11,17 @@ def draw(screen, image, WIDTH, HEIGHT, balance):
     balance_draw = balance_font.render("Your balance: " + str(balance), True, (255, 255, 0))
     screen.blit(balance_draw, (0, 0))
 
+def wind_2(screen):
+    image = pygame.image.load("market/wind_2_van_gogh.jpg")
+    screen.fill((255, 255, 204))
+    screen.blit(image, (425, 79))
+    pygame.display.update()
+    time.sleep(3)
+
+def wind_3(screen):
+    pass
+
+pygame.quit()
 def main(balance):   
     WIDTH = 1200
     HEIGHT = 600
@@ -25,7 +36,7 @@ def main(balance):
     image[1] = pygame.transform.scale(image[1], (200, 150))
     image.append(pygame.image.load("market/painting.jpg"))
     image[2] = pygame.transform.scale(image[2], (200, 150))
-    image.append(pygame.image.load("quest_3/fon.jpg"))
+    image.append(pygame.image.load("market/wind_3_albert.jpg"))
     image[3] = pygame.transform.scale(image[3], (200, 150))
     
     buys = [False, False, False]
@@ -48,10 +59,12 @@ def main(balance):
                     elif event.pos[0] > 500 and event.pos[0] < 700:
                         if balance >= price[1]:
                             buys[1] = True
+                            wind_2(screen)
                             balance -= price[1]
                     elif event.pos[0] > 800 and event.pos[0] < 1000:
                         if balance >= price[2]:
                             buys[2] = True
+                            wind_3(screen)
                             balance -= price[2]
 
         draw(screen, image, WIDTH, HEIGHT, balance)

@@ -215,17 +215,12 @@ def main(music):
                     block = False
     
     player = MyPlayer(screen, 200, 300)
-    check = game_loop(screen, player)
+    check = False
     while check != True:
         player.x = 200
         player.y = 300
         player.defoult = 5
         player.jump = 5
-        second_page = first_font.render("Failed", True, (255, 0, 0))
-        screen.blit(first_image, (0,0))
-        screen.blit(second_page, (550, 250))
-        pygame.display.update()
-        time.sleep(2)
         c = game_loop(screen, player)
         if c == 1:
             check = True
@@ -233,6 +228,11 @@ def main(music):
             check = False
         else:
             return False
+        second_page = first_font.render("Failed", True, (255, 0, 0))
+        screen.blit(first_image, (0,0))
+        screen.blit(second_page, (550, 250))
+        pygame.display.update()
+        time.sleep(2)
 
     screen.blit(first_image, (0, 0))
     third_page = first_font.render("You Win", True, (0, 255, 255))
