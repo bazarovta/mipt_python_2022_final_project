@@ -8,6 +8,7 @@ pygame.init()
 balance = 0
 WIDTH = 1200
 HEIGHT = 600
+music = False
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 image = pygame.image.load("menu/fon.jpg")
 image = pygame.transform.scale(image, (WIDTH, HEIGHT))
@@ -46,15 +47,17 @@ while finished:
                     res = quest_1.main()
                     draw()
                 elif event.pos[0] > 500 and event.pos[0] < 700:
-                    res = quest_2.main()
+                    res = quest_2.main(music)
+                    music = False
                     draw()
                 elif event.pos[0] > 800 and event.pos[0] < 1000:
                     res = quest_3.main()
                     draw()
             if ((event.pos[1] > 400 and event.pos[1] < 550) 
             and (event.pos[0] > 500 and event.pos[0] < 700)):
-                balance = market.main(balance)
-    
+                market_return = market.main(balance)
+                balance = market_return[0]
+                music = market_return[1][0]
     if res == True:
         balance += 100
     

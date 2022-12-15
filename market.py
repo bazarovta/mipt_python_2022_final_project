@@ -21,19 +21,20 @@ def main(balance):
     
     image.append(pygame.image.load("market/fon.png"))
     image[0] = pygame.transform.scale(image[0], (WIDTH, HEIGHT))
-    image.append(pygame.image.load("quest_1/fon.png"))
+    image.append(pygame.image.load("market/music.jpg"))
     image[1] = pygame.transform.scale(image[1], (200, 150))
-    image.append(pygame.image.load("quest_2/fon.jpg"))
+    image.append(pygame.image.load("market/painting.jpg"))
     image[2] = pygame.transform.scale(image[2], (200, 150))
     image.append(pygame.image.load("quest_3/fon.jpg"))
     image[3] = pygame.transform.scale(image[3], (200, 150))
     
-    
+    buys = [False, False, False]
+
     finished = False
-    
+
     while not finished:
         
-        price = [1, 1, 1]
+        price = [30, 30, 30]
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -42,21 +43,21 @@ def main(balance):
                 if event.pos[1] > 200 and event.pos[1] < 350:
                     if event.pos[0] > 200 and event.pos[0] < 400:
                         if balance >= price[0]:
-                            #что-нибудь 0
+                            buys[0] = True
                             balance -= price[0]
                     elif event.pos[0] > 500 and event.pos[0] < 700:
                         if balance >= price[1]:
-                            #что-нибудь 1
+                            buys[1] = True
                             balance -= price[1]
                     elif event.pos[0] > 800 and event.pos[0] < 1000:
                         if balance >= price[2]:
-                            #что-нибудь 2
+                            buys[2] = True
                             balance -= price[2]
 
         draw(screen, image, WIDTH, HEIGHT, balance)
         pygame.display.update()
         
-    return balance
+    return (balance, buys)
 
 
 

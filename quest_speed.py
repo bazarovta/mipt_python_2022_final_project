@@ -186,11 +186,11 @@ def game_loop(screen, player):
     else:
         return 0
 
-def main():
+def main(music):
+
     WIDTH = 1200
     HEIGHT = 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    player = MyPlayer(screen, 200, 300)
     first_font = pygame.font.SysFont("comicsansms", 35)
     first_page = first_font.render("Press Space", True, (255, 0, 0))
     image = pygame.image.load("quest_2/fon.jpg")
@@ -198,8 +198,14 @@ def main():
     screen.blit(first_image, (0,0))
     screen.blit(first_page, (550, 250))
     pygame.display.update()
+
+    if music == True:
+        pygame.mixer.music.load('quest_2/Intergalactic Odyssey.ogg')
+        pygame.mixer.music.play()
+
     pygame.event.clear()
     block = True
+
     while block:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -207,6 +213,8 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     block = False
+    
+    player = MyPlayer(screen, 200, 300)
     check = game_loop(screen, player)
     while check != True:
         player.x = 200
@@ -225,10 +233,13 @@ def main():
             check = False
         else:
             return False
+
     screen.blit(first_image, (0, 0))
     third_page = first_font.render("You Win", True, (0, 255, 255))
     screen.blit(third_page, (550, 300))
     pygame.display.update()
     time.sleep(2)
+    if music == True:
+        pygame.mixer.music.pause()
     return check
 
