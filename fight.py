@@ -147,7 +147,7 @@ def main():
                 screen.fill('GREEN')
                 life = True
                 text_score_2 = text.render('YOU WIN', True, (0, 0, 0))
-                text_advice = text_data.render('Close window to quit', True, (0, 0, 0))
+                text_advice = text_data.render('Close window to exit', True, (0, 0, 0))
                 screen.blit(text_score_2, (WIDTH / 2 - 100, HEIGHT / 2 - 50))
                 screen.blit(text_advice, (WIDTH / 2 - 125, HEIGHT / 2))
                 pygame.display.update()
