@@ -1,6 +1,6 @@
 import quest_hide as quest_3
 import quest_speed as quest_2
-import main_fight as quest_1
+import fight as quest_1
 import market
 import pygame
 
