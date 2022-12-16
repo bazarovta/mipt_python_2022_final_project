@@ -1,6 +1,6 @@
 import quest_hide as quest_3
 import quest_speed as quest_2
-import main as quest_1
+import main_fight as quest_1
 import market
 import pygame
 
@@ -20,7 +20,7 @@ image_q3 = pygame.transform.scale(image_q3, (200, 150))
 image_m = pygame.image.load("market/fon_s.png")
 image_m = pygame.transform.scale(image_m, (200, 150))
 
-balance = 500
+balance = 0
 music = False
 
 def draw():
