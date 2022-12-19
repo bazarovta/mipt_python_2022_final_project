@@ -53,7 +53,6 @@ while finished:
                     draw()
                 elif event.pos[0] > 500 and event.pos[0] < 700:
                     res = quest_2.main(music)
-                    music = False
                     draw()
                 elif event.pos[0] > 800 and event.pos[0] < 1000:
                     res = quest_3.main()

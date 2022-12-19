@@ -104,7 +104,7 @@ def game_loop(screen, player):
     FPS = 30
 
     obstacles = [Obstacle(screen, 1200, 200, 200, 50)]
-    check = True
+
     delta_t = 3
     time_font = pygame.font.SysFont("comicsansms", 35)
 
@@ -205,7 +205,6 @@ def main(music):
 
     if music == True:
         pygame.mixer.music.load('quest_2/Intergalactic Odyssey.ogg')
-        pygame.mixer.music.play()
 
     pygame.event.clear()
     block = True
@@ -213,10 +212,13 @@ def main(music):
     while block:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.mixer.music.pause()
                 return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     block = False
+                    if music == True:
+                        pygame.mixer.music.play()
     
     player = MyPlayer(screen, 200, 300)
     check = False
@@ -225,14 +227,20 @@ def main(music):
         player.y = 300
         player.defoult = 5
         player.jump = 5
+        if music == True:
+            pygame.mixer.music.play()
         c = game_loop(screen, player)
         if c == 1:
             check = True
         elif c == 0:
             check = False
         else:
+            if music == True:
+                pygame.mixer.music.pause()
             return False
         if check != True:
+            if music == True:
+                pygame.mixer.music.pause()
             second_page = first_font.render("Failed", True, (255, 0, 0))
             screen.blit(first_image, (0,0))
             screen.blit(second_page, (550, 250))
@@ -240,12 +248,12 @@ def main(music):
         time.sleep(2)
 
     screen.blit(first_image, (0, 0))
+    if music == True:
+        pygame.mixer.music.pause()
     third_page = first_font.render("You Win", True, (0, 255, 255))
     screen.blit(third_page, (550, 300))
     pygame.display.update()
     time.sleep(2)
-    if music == True:
-        pygame.mixer.music.pause()
-
+    
     return check
 
