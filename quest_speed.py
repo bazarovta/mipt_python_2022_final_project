@@ -212,7 +212,8 @@ def main(music):
     while block:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.mixer.music.pause()
+                if music == True:
+                    pygame.mixer.music.pause()
                 return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
