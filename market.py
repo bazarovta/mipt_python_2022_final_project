@@ -1,6 +1,6 @@
 import pygame
 import time
-from pyvidplayer import Video
+import moviepy.editor
 
 def draw(screen, image, WIDTH, HEIGHT, balance):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -21,18 +21,8 @@ def wind_2(screen):
     time.sleep(3)
 
 def wind_3(screen):
-    vid = Video("market/video.mp4")
-    win = pygame.display.set_mode((1200, 600))
-    finished = True
-    clock = pygame.time.Clock()
-    while finished:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                vid.close()
-                finished = False
-        clock.tick(60)
-        vid.draw(win, (0, 0))
-        pygame.display.update()
+    video = moviepy.editor.VideoFileClip("market/video.mp4")
+    video.preview()
 
 def main(balance):   
     WIDTH = 1200
@@ -72,10 +62,10 @@ def main(balance):
                         if balance >= price[1]:
                             wind_2(screen)
                             balance -= price[1]
-                    #elif event.pos[0] > 800 and event.pos[0] < 1000:
-                        #if balance >= price[2]:
-                            #wind_3(screen)
-                            #balance -= price[2]
+                    elif event.pos[0] > 800 and event.pos[0] < 1000:
+                        if balance >= price[2]:
+                            wind_3(screen)
+                            balance -= price[2]
 
         draw(screen, image, WIDTH, HEIGHT, balance)
         pygame.display.update()
