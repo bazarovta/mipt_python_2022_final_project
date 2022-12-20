@@ -1,5 +1,4 @@
 import pygame
-#from pygame.draw import *
 import random
 import numpy as np
 import math

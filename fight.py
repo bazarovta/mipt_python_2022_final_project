@@ -1,9 +1,9 @@
-import tkinter
-from tkinter.filedialog import *
-from Player import *
-from Enemy import *
+#import tkinter
+#from tkinter.filedialog import *
+from Player import Player
+from Enemy import Enemy
 
-import random
+#import random
 
 import time
 import pygame
@@ -37,8 +37,6 @@ def main():
     text_data = pygame.font.Font(None, 30)
     
     clock = pygame.time.Clock()
-    
-    finished = False
 
     shells = []
 

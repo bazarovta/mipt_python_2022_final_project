@@ -14,7 +14,6 @@ class Hero(Player.Player):
                 10
                 )
     def move(self, blocks, keys):
-        c = False
         flag1 = False
         flag2 = False
         flag3 = False
